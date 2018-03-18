@@ -63,6 +63,18 @@ def getcayennethings():
         print(err)
 
 
+def cayennecreatejob():
+    """
+    This method will drive GPIO17/P17 either In or Out
+
+    """
+    pass
+
+
+def caynnegetjobs():
+    pass
+
+
 if __name__ == '__main__':
     mything = getcayennethings()
     print(mything)
