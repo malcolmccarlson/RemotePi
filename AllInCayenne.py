@@ -13,6 +13,7 @@ myappsecret = Config.get('Authentication', 'APP_SECRET')
 mypassword = Config.get('AccountLogin', 'MYPASSWORD')
 myemail = Config.get('AccountLogin', 'EMAIL')
 myremoturl = Config.get('URLs', 'REMOTE_URL')
+myremoteother = Config.get('URLs', 'REMOTE_OTHER')
 myurlfortoken = Config.get('URLs', 'URLFORTOKEN')
 myredirecturi = Config.get('URLs', 'REDIRECTURI')
 
@@ -49,5 +50,19 @@ def getcayenneapps():
         print(err)
 
 
+def getcayennethings():
+    atoken, rtoken = getcayennetoken()
+    payload = {'Authorization': "Bearer %s" % atoken,
+               'X-API-Version': '1.0'}
+    try:
+        r = requests.get(myremoteother+ '/things', headers=payload)
+        r.raise_for_status()
+        mylist = json.loads(r.content)
+        return mylist
+    except requests.exceptions.HTTPError as err:
+        print(err)
+
+
 if __name__ == '__main__':
-    getcayenneapps()
+    mything = getcayennethings()
+    print(mything)
