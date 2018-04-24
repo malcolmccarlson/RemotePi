@@ -5,7 +5,7 @@ from configparser import ConfigParser
 
 
 Config = ConfigParser()
-Config.read('cayenneconfig.ini')
+Config.read('config.ini')
 
 
 myappkey = Config.get('Authentication', 'APP_KEY')
@@ -15,6 +15,7 @@ myemail = Config.get('AccountLogin', 'EMAIL')
 myremoturl = Config.get('URLs', 'REMOTE_URL')
 myurlfortoken = Config.get('URLs', 'URLFORTOKEN')
 myredirecturi = Config.get('URLs', 'REDIRECTURI')
+myremoteother = Config.get('URLs', 'REMOTE_OTHER')
 
 
 def getcayennetoken():
@@ -48,6 +49,46 @@ def getcayenneapps():
     except requests.exceptions.HTTPError as err:
         print(err)
 
+def recursive_items(dictionary):
+    for key, value in dictionary.items():
+        if type(value) is dict:
+            yield (key, value)
+            yield from recursive_items(value)
+        else:
+            yield (key, value)
+
+
+def getthings():
+    atoken, rtoken = getcayennetoken()
+    payload = {'Authorization': "Bearer %s" % atoken,
+               'X-API-Version': '1.0'}
+    try:
+        r = requests.get(myremoteother+'/things', headers=payload)
+        r.raise_for_status()
+        mylist = json.loads(r.content)
+        print(mylist)
+    except requests.exceptions.HTTPError as err:
+        print(err)
+
+
+def getjobs():
+    atoken, rtoken = getcayennetoken()
+    payload = {'Authorization': "Bearer %s" % atoken,
+               'X-API-Version': '1.0'}
+    try:
+        r = requests.get(myremoteother+'/jobs', headers=payload)
+        r.raise_for_status()
+        mylist = json.loads(r.content)
+        if mylist is None:
+            print(True)
+    except requests.exceptions.HTTPError as err:
+        print(err)
+
+
+def createjob():
+    pass
+
 
 if __name__ == '__main__':
-    getcayenneapps()
+    myreturn = getthings()
+    print(myreturn)
