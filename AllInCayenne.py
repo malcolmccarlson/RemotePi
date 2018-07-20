@@ -1,4 +1,4 @@
-import oauth2
+#  import oauth2
 import requests
 import json
 from configparser import ConfigParser
@@ -49,6 +49,7 @@ def getcayenneapps():
     except requests.exceptions.HTTPError as err:
         print(err)
 
+
 def recursive_items(dictionary):
     for key, value in dictionary.items():
         if type(value) is dict:
@@ -90,5 +91,4 @@ def createjob():
 
 
 if __name__ == '__main__':
-    myreturn = getthings()
-    print(myreturn)
+    getthings()
